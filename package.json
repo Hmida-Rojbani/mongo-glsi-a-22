@@ -12,6 +12,7 @@
   "dependencies": {
     "config": "^3.3.7",
     "debug": "^4.3.3",
+    "express": "^4.17.2",
     "mongoose": "^6.2.1"
   }
 }
