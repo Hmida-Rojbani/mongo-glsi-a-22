@@ -1,0 +1,6 @@
+{
+    "DB" :{
+        "username" : "user",
+        "host": "@db.mhbax.mongodb.net/gl-a-22?retryWrites=true&w=majority"
+    }
+}
