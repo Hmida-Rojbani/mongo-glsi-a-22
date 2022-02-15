@@ -1,18 +1,13 @@
 require('./db/connect')
 const express = require('express');
 const appDebug = require('debug')('app:debug');
-const {Course} = require('./models/course');
+const course_router = require('./routers/courses')
 const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
 
-let course = new Course({
-    title : 'Angular',
-    author : ' S. Saoudi',
-    tags : ['front', 'ts'],
-    isPublished : 'false'
-});
+app.use('/api/courses',course_router);
 
 //console.log( course.save());
 
