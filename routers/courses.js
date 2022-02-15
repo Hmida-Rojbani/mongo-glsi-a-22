@@ -7,6 +7,7 @@ router.get('',async (req,res) =>{
 });
 
 // add course to db
+// add joi to validate  
 router.post('',async (req,res) =>{
     let course = new Course(req.body);
     course = await course.save();
