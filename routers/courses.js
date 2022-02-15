@@ -64,4 +64,16 @@ router.get('/price/in/:minp/:maxp',async (req,res) =>{
     res.send(courses);
 });
 
+// get all elts if isPublished true, price over 700
+router.get('/price/published/over/:p',async (req,res) =>{
+    let courses = await Course.find({price : { $gte : req.params.p }, isPublished : true})
+                                
+    res.send(courses);
+});
+
+//
+router.put('/:id',async (req,res) =>{
+   // Course.findByIdAndUpdate
+
+});
 module.exports=router;
