@@ -11,8 +11,8 @@ let courseSchema = new mongoose.Schema({
 });
 
 let course_validation = Joi.object({
-    title : Joi.string().min(5).max(30).alphanum.required(),
-    author : Joi.string().min(5).max(50).pattern(new RegExp('^[a-zA-Z/s]$')).required(),
+    title : Joi.string().min(5).max(30).alphanum().required(),
+    author : Joi.string().min(5).max(50).pattern(new RegExp('^[a-zA-Z .]{5,50}$')).required(),
     tags : Joi.array().items(Joi.string().min(2)).required(),
     isPublished : Joi.boolean(),
     price : Joi.number().positive()
