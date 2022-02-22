@@ -8,6 +8,7 @@ router.get('',async (req,res) =>{
 
 // add course to db
 // add joi to validate  
+// TODO change post to support the new collection
 router.post('',async (req,res) =>{
     let validation_results = course_validation.validate(req.body);
     if(validation_results.error)
