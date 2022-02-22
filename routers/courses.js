@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const {Course, course_validation, course_validation_update, object_id_validation} = require('../models/course');
+const {Author} = require('../models/author');
 // get all documents from courses
 router.get('',async (req,res) =>{
     let courses = await Course.find();
@@ -13,9 +14,19 @@ router.post('',async (req,res) =>{
     let validation_results = course_validation.validate(req.body);
     if(validation_results.error)
         return res.status(400).send(validation_results.error.details[0].message);
+    let author = await Author.findById(req.body.author);
+    console.log(author);
+    if(!author)
+        return res.status(404).send('Author id not found');
+    
+
     let course = new Course(req.body);
+    course.author.name = author.name;
+    course.author.id = author._id; 
     try {
         course = await course.save();
+        author.courses.push(course._id);
+        await author.save();
         res.send(course);
     } catch (error) {
         res.status(400).send(error.message);

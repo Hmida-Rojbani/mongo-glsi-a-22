@@ -12,8 +12,7 @@ let courseSchema = new mongoose.Schema({
     },
     author : {
         name : {
-            type : String,
-            required: true
+            type : String
         },
         id : {
             type :mongoose.Schema.Types.ObjectId,
@@ -42,7 +41,7 @@ let courseSchema = new mongoose.Schema({
 
 let course_validation = Joi.object({
     title : Joi.string().min(5).max(30).alphanum().required(),
-    author : Joi.string().min(5).max(50).pattern(new RegExp('^[a-zA-Z .]{5,50}$')).required(),
+    author : Joi.objectId().required(),
     tags : Joi.array().items(Joi.string().min(2)).required(),
     isPublished : Joi.boolean(),
     price : Joi.number().positive()
@@ -50,7 +49,7 @@ let course_validation = Joi.object({
 
 let course_validation_update = Joi.object({
     title : Joi.string().min(5).max(30).alphanum(),
-    author : Joi.string().min(5).max(50).pattern(new RegExp('^[a-zA-Z .]{5,50}$')),
+    author : Joi.objectId(),
     tags : Joi.array().items(Joi.string().min(2)),
     isPublished : Joi.boolean(),
     price : Joi.number().positive()
