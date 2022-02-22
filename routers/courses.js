@@ -35,6 +35,11 @@ router.post('',async (req,res) =>{
 });
 
 // get all documents from courses with given title
+router.get('',async (req,res) =>{
+    let courses = await Course.find().populate('author.id');
+    res.send(courses);
+});
+// get all documents from courses with given title
 router.get('/title/:t',async (req,res) =>{
     let courses = await Course.find({title : req.params.t});
     res.send(courses);
