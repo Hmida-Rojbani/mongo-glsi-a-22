@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {Course, course_validation} = require('../models/course');
+const {Course, course_validation, course_validation_update, object_id_validation} = require('../models/course');
 // get all documents from courses
 router.get('',async (req,res) =>{
     let courses = await Course.find();
@@ -13,8 +13,13 @@ router.post('',async (req,res) =>{
     if(validation_results.error)
         return res.status(400).send(validation_results.error.details[0].message);
     let course = new Course(req.body);
-    course = await course.save();
-    res.send(course);
+    try {
+        course = await course.save();
+        res.send(course);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+    
 });
 
 // get all documents from courses with given title
@@ -74,6 +79,33 @@ router.get('/price/published/over/:p',async (req,res) =>{
 //
 router.put('/:id',async (req,res) =>{
    // Course.findByIdAndUpdate
+    let validation_results = course_validation_update.validate(req.body);
+    if(validation_results.error)
+        return res.status(400).send(validation_results.error.details[0].message);
+        validation_results = object_id_validation.validate(req.params);
+    if(validation_results.error)
+        return res.status(400).send(validation_results.error.details[0].message);
+    try {
+        await Course.updateOne({_id: req.params.id},req.body);
+        res.send(await Course.findById(req.params.id));
+    } catch (error) {
+        res.status(400).send('Problem in updating Course')
+    }
+        
+});
 
+router.delete('/:id',async (req,res) =>{
+    
+    let validation_results = object_id_validation.validate(req.params);
+    if(validation_results.error)
+        return res.status(400).send(validation_results.error.details[0].message);
+    try {
+        let course = await Course.findByIdAndRemove(req.params.id);
+        if(! course )
+            return res.status(404).send('Course Id not found');
+        res.send(course);
+    } catch (error) {
+        res.status(400).send('Problem in Delete Course')
+    }
 });
 module.exports=router;
